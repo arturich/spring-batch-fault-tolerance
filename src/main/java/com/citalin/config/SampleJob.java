@@ -48,6 +48,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 import com.citalin.listener.SkipListener;
+import com.citalin.listener.SkipListenerImpl;
 import com.citalin.model.StudentCsv;
 import com.citalin.model.StudentJdbc;
 import com.citalin.model.StudentJson;
@@ -92,6 +93,9 @@ public class SampleJob {
 	@Autowired
 	SkipListener skipListener;
 	
+	@Autowired 
+	SkipListenerImpl skipListenerImpl;
+	
 	
 	@Bean
 	public Job chunkJob()
@@ -114,7 +118,8 @@ public class SampleJob {
 				.skip(Throwable.class) //Skip all type of exceptions
 				//.skipLimit(1)
 				.skipPolicy(new AlwaysSkipItemSkipPolicy() )
-				.listener(skipListener)
+				//.listener(skipListener) // first approach using annotations on a class
+				.listener(skipListenerImpl) //second approach implementing interface
 				.build();
 	}
 	
