@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -134,7 +135,7 @@ public class SampleJob {
 				setLineTokenizer(new DelimitedLineTokenizer() {
 					{
 						setNames("ID","First Name","Last Name","Email");
-						setDelimiter("|");
+						//setDelimiter("|");
 					}
 				});
 				
@@ -264,7 +265,23 @@ public class SampleJob {
 	{
 		JsonFileItemWriter<StudentJson> jsonFileItemWriter = 
 				new JsonFileItemWriter<StudentJson>(fileSystemResource,
-						new JacksonJsonObjectMarshaller<StudentJson>());
+						new JacksonJsonObjectMarshaller<StudentJson>()) {
+
+							@Override
+							public String doWrite(List<? extends StudentJson> items) {
+								
+								items.stream().forEach(it -> {
+									if(it.getId() == 3)
+									{
+										throw new NullPointerException();
+									}
+								});
+								
+								return super.doWrite(items);
+							}
+			
+			
+		};
 		
 		return jsonFileItemWriter;
 	}
