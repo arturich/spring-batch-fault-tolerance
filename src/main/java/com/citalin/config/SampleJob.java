@@ -18,7 +18,6 @@ import org.springframework.batch.core.step.skip.AlwaysSkipItemSkipPolicy;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.adapter.ItemWriterAdapter;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.ItemPreparedStatementSetter;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
@@ -27,7 +26,6 @@ import org.springframework.batch.item.file.FlatFileFooterCallback;
 import org.springframework.batch.item.file.FlatFileHeaderCallback;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
-import org.springframework.batch.item.file.FlatFileParseException;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
@@ -48,6 +46,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
+import com.citalin.listener.SkipListener;
 import com.citalin.model.StudentCsv;
 import com.citalin.model.StudentJdbc;
 import com.citalin.model.StudentJson;
@@ -89,6 +88,9 @@ public class SampleJob {
 //	@Autowired
 //	private StudentService studentService;
 	
+	@Autowired
+	SkipListener skipListener;
+	
 	
 	@Bean
 	public Job chunkJob()
@@ -111,6 +113,7 @@ public class SampleJob {
 				.skip(Throwable.class) //Skip all type of exceptions
 				//.skipLimit(1)
 				.skipPolicy(new AlwaysSkipItemSkipPolicy() )
+				.listener(skipListener)
 				.build();
 	}
 	
