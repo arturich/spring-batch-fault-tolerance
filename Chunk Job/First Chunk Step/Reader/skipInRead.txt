@@ -1,2 +1,0 @@
-2|2|Sachin|Dave|sachin@gmail.com|Thu Apr 21 09:29:16 CDT 2022|3
-7|7|Prabhas|Shirke|prabhas@gmail.com|Thu Apr 21 09:29:16 CDT 2022|8
