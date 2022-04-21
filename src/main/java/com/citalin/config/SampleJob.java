@@ -116,9 +116,12 @@ public class SampleJob {
 				.faultTolerant()
 				//.skip(FlatFileParseException.class)
 				.skip(Throwable.class) //Skip all type of exceptions
-				//.skipLimit(1)
-				.skipPolicy(new AlwaysSkipItemSkipPolicy() )
+				.skipLimit(100)
+				//.skipPolicy(new AlwaysSkipItemSkipPolicy() )
 				//.listener(skipListener) // first approach using annotations on a class
+				.retryLimit(1) // default is 0, no retry
+				.retry(Throwable.class) // in which clases or exceptions do we want to try
+				
 				.listener(skipListenerImpl) //second approach implementing interface
 				.build();
 	}
@@ -278,13 +281,13 @@ public class SampleJob {
 								items.stream().forEach(it -> {
 									if(it.getId() == 3)
 									{
+										System.out.println("Inside jsonFileItemWriter");
 										throw new NullPointerException();
 									}
 								});
 								
 								return super.doWrite(items);
-							}
-			
+							}			
 			
 		};
 		

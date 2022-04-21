@@ -12,10 +12,11 @@ public class FirstItemProcessor implements ItemProcessor<StudentCsv,StudentJson>
 
 	@Override
 	public StudentJson process(StudentCsv item) throws Exception {
-		System.out.println("Inside item processor");		
+				
 		StudentJson studentJson = new StudentJson();
 		if(item.getId() == 6)
 		{
+			System.out.println("Inside item processor");
 			throw new NullPointerException("Not valid id - ");
 		}
 		studentJson.setId(item.getId());
